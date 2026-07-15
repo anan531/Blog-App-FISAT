@@ -13,6 +13,36 @@ let app = Express()
 
       Mongoose.connect("mongodb://ananya_2004:Anyamongo@ac-owpbjf1-shard-00-00.9qx1pdq.mongodb.net:27017,ac-owpbjf1-shard-00-01.9qx1pdq.mongodb.net:27017,ac-owpbjf1-shard-00-02.9qx1pdq.mongodb.net:27017/blogdb?ssl=true&replicaSet=atlas-3dap86-shard-0&authSource=admin&appName=Cluster0")
 
+
+app.post("/viewall", async (req,res) => {
+
+    let token=req.headers.token
+
+    jwt.verify(token,"blogApp",async (error,decoded)=>{
+
+            if (decoded && decoded.email){
+                postModel.find().then(
+                    (items)=>{
+                        res.json(items)
+                    }
+                ).catch(
+                    (error)=>{
+
+                        res.json({"status":"error"})
+                    })
+
+            }else{
+
+                res.json({"status":"Invalid Authentication"})
+            }
+
+
+
+})
+  
+
+})
+
 app.post("/create", async (req,res) => {
     let input= req.body
 
